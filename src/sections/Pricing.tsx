@@ -201,7 +201,7 @@ function HorizontalMarqueeBand() {
 function VerticalMarqueeBand() {
   const items = [...marqueeKeywords, ...marqueeKeywords]
   return (
-    <div className="hidden lg:flex flex-col overflow-hidden items-center border-l border-border-os/30 min-w-[80px]">
+    <div className="hidden lg:flex h-[520px] self-start flex-col overflow-hidden items-center border-l border-border-os/30 min-w-[80px]">
       <div className="flex flex-col items-center shrink-0 animate-marquee-left-fast">
         {items.map((item, i) => (
           <span
@@ -291,7 +291,7 @@ export default function Pricing() {
           {/* Cards Grid */}
           <div
             ref={cardsRef}
-            className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-6"
+            className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start gap-6 py-6"
           >
             {tiers.map((tier, i) => (
               <PricingCard key={i} tier={tier} index={i} />
