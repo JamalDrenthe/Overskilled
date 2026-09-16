@@ -1,0 +1,83 @@
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 33% 5%;
+    --foreground: 240 20% 95%;
+    --card: 240 33% 13%;
+    --card-foreground: 240 20% 95%;
+    --popover: 240 33% 5%;
+    --popover-foreground: 240 20% 95%;
+    --primary: 72 100% 50%;
+    --primary-foreground: 240 33% 5%;
+    --secondary: 240 33% 13%;
+    --secondary-foreground: 240 20% 95%;
+    --muted: 240 33% 13%;
+    --muted-foreground: 240 20% 60%;
+    --accent: 72 100% 50%;
+    --accent-foreground: 240 33% 5%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 33% 30%;
+    --input: 240 33% 30%;
+    --ring: 72 100% 50%;
+    --radius: 0.625rem;
+    --sidebar-background: 240 33% 5%;
+    --sidebar-foreground: 240 20% 95%;
+    --sidebar-primary: 72 100% 50%;
+    --sidebar-primary-foreground: 240 33% 5%;
+    --sidebar-accent: 240 33% 13%;
+    --sidebar-accent-foreground: 240 20% 95%;
+    --sidebar-border: 240 33% 30%;
+    --sidebar-ring: 72 100% 50%;
+  }
+
+  * {
+    @apply border-border-os;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    @apply bg-dark text-off-white font-sans antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: rgba(223, 255, 0, 0.3);
+    color: #E6E6FA;
+  }
+}
+
+@layer components {
+  .text-gradient {
+    background: linear-gradient(180deg, #E6E6FA 0%, #8888AA 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glow-border {
+    border: 1px solid rgba(223, 255, 0, 0.3);
+    box-shadow: 0 8px 32px rgba(223, 255, 0, 0.08);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
