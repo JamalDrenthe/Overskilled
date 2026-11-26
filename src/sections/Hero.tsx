@@ -153,26 +153,6 @@ function CircularBadge({ text }: { text: string }) {
             </textPath>
           </text>
         </svg>
-
-        {/* Static Center Emblem Core */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div
-            className="w-[96px] h-[96px] md:w-[132px] md:h-[132px] rounded-full bg-surface/95 border border-border-os flex flex-col items-center justify-center shadow-[inset_0_0_24px_rgba(223,255,0,0.12)] group-hover:border-accent-lime/70 transition-colors duration-300"
-          >
-            {/* Glowing status dot */}
-            <span className="w-1.5 h-1.5 rounded-full bg-success-green mb-1 shadow-[0_0_8px_#3BC9A0]" />
-
-            {/* Geometric OS / Shield Monogram */}
-            <div className="flex items-center gap-0.5 text-off-white font-sans font-black text-xl md:text-3xl tracking-[-0.05em] leading-none">
-              <span>O</span>
-              <span className="text-accent-lime">S</span>
-            </div>
-
-            <span className="mt-1 text-[8px] md:text-[10px] font-mono uppercase tracking-[0.22em] text-accent-lime/90">
-              ELITE
-            </span>
-          </div>
-        </div>
       </div>
     </div>
   )
