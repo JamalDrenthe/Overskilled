@@ -1,17 +1,25 @@
 import { useEffect } from 'react'
+import { BrowserRouter, HashRouter, Routes, Route } from 'react-router'
 import Lenis from 'lenis'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-import Navigation from './sections/Navigation'
-import Hero from './sections/Hero'
-import MarqueeCapabilities from './sections/MarqueeCapabilities'
-import Pricing from './sections/Pricing'
-import SocialProof from './sections/SocialProof'
-import FinalCTA from './sections/FinalCTA'
-import Footer from './sections/Footer'
+import { LanguageProvider } from './lib/i18n'
+import { QuoteModalProvider } from './components/QuoteModal'
+import Home from './pages/Home'
+import ServicesPage from './pages/ServicesPage'
 
 gsap.registerPlugin(ScrollTrigger)
+
+function isStandalonePreview(): boolean {
+  if (typeof window === 'undefined') return false
+  const { protocol, pathname } = window.location
+  return (
+    protocol === 'file:' ||
+    protocol === 'blob:' ||
+    pathname.endsWith('.html')
+  )
+}
 
 export default function App() {
   useEffect(() => {
@@ -23,27 +31,33 @@ export default function App() {
     // Connect Lenis to GSAP ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update)
 
-    gsap.ticker.add((time) => {
+    const rafCallback = (time: number) => {
       lenis.raf(time * 1000)
-    })
+    }
 
+    gsap.ticker.add(rafCallback)
     gsap.ticker.lagSmoothing(0)
 
     return () => {
+      gsap.ticker.remove(rafCallback)
       lenis.destroy()
-      gsap.ticker.remove(lenis.raf)
     }
   }, [])
 
+  const RouterComponent = isStandalonePreview() ? HashRouter : BrowserRouter
+
   return (
-    <div className="min-h-screen" style={{ background: '#0A0A1A' }}>
-      <Navigation />
-      <Hero />
-      <MarqueeCapabilities />
-      <Pricing />
-      <SocialProof />
-      <FinalCTA />
-      <Footer />
-    </div>
+    <LanguageProvider>
+      <QuoteModalProvider>
+        <RouterComponent>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/diensten" element={<ServicesPage />} />
+            <Route path="*" element={<Home />} />
+          </Routes>
+        </RouterComponent>
+      </QuoteModalProvider>
+    </LanguageProvider>
   )
 }

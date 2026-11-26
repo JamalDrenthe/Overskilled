@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useLanguage, type PricingTierTranslation } from '../lib/i18n'
+import { useQuoteModal } from '../components/QuoteModal'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -16,86 +18,28 @@ const CheckIcon = () => (
   </svg>
 )
 
-interface PricingTier {
-  label: string
-  labelBg?: string
-  title: string
-  description: string
-  price: string
-  period: string
-  features: string[]
-  cta: string
-  featured?: boolean
-  dashed?: boolean
-}
-
-const tiers: PricingTier[] = [
-  {
-    label: 'STARTER',
-    title: 'Starter',
-    description: 'Perfect for small projects and MVPs. Get moving fast.',
-    price: '$2,500',
-    period: '/mo',
-    features: [
-      '1 dedicated senior engineer',
-      '40 hours/month',
-      'Email support',
-      'Weekly standups',
-      'Git repository access',
-      'Basic CI/CD setup',
-    ],
-    cta: 'Choose Starter',
-  },
-  {
-    label: 'MOST POPULAR',
-    labelBg: 'rgba(223, 255, 0, 0.15)',
-    title: 'Professional',
-    description: 'For growing teams that need serious firepower.',
-    price: '$5,000',
-    period: '/mo',
-    features: [
-      '2 dedicated senior engineers',
-      '80 hours/month',
-      'Priority Slack support',
-      'Daily standups',
-      'Full DevOps setup',
-      'Architecture reviews',
-      'Weekly progress reports',
-      'Code quality audits',
-    ],
-    cta: 'Choose Professional',
-    featured: true,
-  },
-  {
-    label: 'ENTERPRISE',
-    title: 'Enterprise',
-    description: 'Unlimited scale for organizations that demand the best.',
-    price: '$10,000',
-    period: '/mo',
-    features: [
-      '4 dedicated senior engineers',
-      '160 hours/month',
-      '24/7 on-call support',
-      'Twice-daily standups',
-      'Full infrastructure management',
-      'Quarterly strategy sessions',
-      'Custom integrations',
-      'SLA guarantee',
-      'Dedicated account manager',
-    ],
-    cta: 'Choose Enterprise',
-    dashed: true,
-  },
-]
-
-// Marquee keywords for the wrapping bands
+// Marquee keywords for the wrapping bands (expanded with cloud & security terms)
 const marqueeKeywords = [
-  'React', 'Node.js', 'Python', 'AWS', 'Docker', 'Kubernetes',
-  'PostgreSQL', 'GraphQL', 'TypeScript', 'ML', 'CI/CD', 'Terraform',
-  'Next.js', 'Redis', 'Stripe', 'Prisma', 'Tailwind', 'gRPC',
+  'Cloud Security', 'AWS → GCP', 'AWS → Azure', 'Terraform', 'OpenTofu', 'Zero-Trust',
+  'SOC 2 / ISO 27001', 'NIS2 & GDPR', '24/7 CSPM', 'GKE / AKS', 'AlloyDB', 'FinOps',
+  'React', 'Node.js', 'Python', 'Kubernetes', 'PostgreSQL', 'TypeScript', 'CI/CD',
 ]
 
-function PricingCard({ tier, index }: { tier: PricingTier; index: number }) {
+function PricingCard({
+  tier,
+  index,
+  noHiddenFees,
+  featuresLabel,
+  cancelAnytime,
+  onSelectTier,
+}: {
+  tier: PricingTierTranslation
+  index: number
+  noHiddenFees: string
+  featuresLabel: string
+  cancelAnytime: string
+  onSelectTier: (tierKey: PricingTierTranslation['key']) => void
+}) {
   const cardRef = useRef<HTMLDivElement>(null)
 
   return (
@@ -103,7 +47,7 @@ function PricingCard({ tier, index }: { tier: PricingTier; index: number }) {
       ref={cardRef}
       className={`pricing-card flex flex-col p-6 md:p-10 rounded-[20px] transition-all duration-300 hover:-translate-y-1 ${
         tier.featured
-          ? 'bg-surface border-2 border-accent-lime shadow-lime-glow scale-[1.02]'
+          ? 'bg-surface border-2 border-accent-lime shadow-lime-glow md:scale-[1.02]'
           : tier.dashed
           ? 'bg-surface border border-dashed border-border-os'
           : 'bg-surface border border-border-os'
@@ -129,7 +73,7 @@ function PricingCard({ tier, index }: { tier: PricingTier; index: number }) {
       </h3>
 
       {/* Description */}
-      <p className="text-sm font-mono text-secondary-text mb-6 line-clamp-2">
+      <p className="text-sm font-mono text-secondary-text mb-6">
         {tier.description}
       </p>
 
@@ -142,14 +86,14 @@ function PricingCard({ tier, index }: { tier: PricingTier; index: number }) {
           {tier.period}
         </span>
       </div>
-      <p className="text-xs font-mono text-secondary-text/50 mb-8">
-        No hidden fees
+      <p className="text-xs font-mono text-secondary-text/60 mb-8">
+        {noHiddenFees}
       </p>
 
       {/* Features */}
       <div className="flex-1">
-        <p className="text-xs font-mono uppercase tracking-[0.05em] text-secondary-text/30 mb-4">
-          Features
+        <p className="text-xs font-mono uppercase tracking-[0.05em] text-secondary-text/40 mb-4">
+          {featuresLabel}
         </p>
         <ul className="space-y-3">
           {tier.features.map((feature, i) => (
@@ -164,16 +108,14 @@ function PricingCard({ tier, index }: { tier: PricingTier; index: number }) {
       {/* CTA */}
       <div className="mt-8">
         <button
-          className={`w-full py-3.5 px-6 rounded-[10px] font-semibold text-sm font-sans transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] ${
-            tier.featured
-              ? 'bg-accent-lime text-dark hover:bg-accent-lime-hover'
-              : 'bg-accent-lime text-dark hover:bg-accent-lime-hover'
-          }`}
+          type="button"
+          onClick={() => onSelectTier(tier.key)}
+          className="w-full py-3.5 px-6 rounded-[10px] font-semibold text-sm font-sans transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] bg-accent-lime text-dark hover:bg-accent-lime-hover"
         >
           {tier.cta}
         </button>
         <p className="text-center text-xs font-mono text-secondary-text/50 mt-3">
-          Cancel anytime
+          {cancelAnytime}
         </p>
       </div>
     </div>
@@ -182,7 +124,7 @@ function PricingCard({ tier, index }: { tier: PricingTier; index: number }) {
 
 // Horizontal marquee band for the top
 function HorizontalMarqueeBand() {
-  const items = [...marqueeKeywords, ...marqueeKeywords, ...marqueeKeywords, ...marqueeKeywords]
+  const items = [...marqueeKeywords, ...marqueeKeywords, ...marqueeKeywords]
   return (
     <div className="hidden lg:flex overflow-hidden whitespace-nowrap py-4 border-b border-border-os/30">
       <div className="flex items-center shrink-0 animate-marquee-left-fast">
@@ -221,6 +163,8 @@ export default function Pricing() {
   const sectionRef = useRef<HTMLElement>(null)
   const headerRef = useRef<HTMLHeadingElement>(null)
   const cardsRef = useRef<HTMLDivElement>(null)
+  const { t } = useLanguage()
+  const { openQuoteModal } = useQuoteModal()
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -278,7 +222,7 @@ export default function Pricing() {
         ref={headerRef}
         className="text-[28px] md:text-[48px] font-bold text-off-white text-center font-sans tracking-[-0.01em] mb-12 md:mb-20 opacity-0"
       >
-        CHOOSE YOUR EDGE
+        {t.pricing.title}
       </h2>
 
       {/* Marquee + Cards Layout */}
@@ -293,8 +237,16 @@ export default function Pricing() {
             ref={cardsRef}
             className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start gap-6 py-6"
           >
-            {tiers.map((tier, i) => (
-              <PricingCard key={i} tier={tier} index={i} />
+            {t.pricing.tiers.map((tier, i) => (
+              <PricingCard
+                key={tier.key}
+                tier={tier}
+                index={i}
+                noHiddenFees={t.pricing.noHiddenFees}
+                featuresLabel={t.pricing.featuresLabel}
+                cancelAnytime={t.pricing.cancelAnytime}
+                onSelectTier={(tierKey) => openQuoteModal({ tier: tierKey })}
+              />
             ))}
           </div>
 

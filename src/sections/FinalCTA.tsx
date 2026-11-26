@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useLanguage } from '../lib/i18n'
+import { useQuoteModal } from '../components/QuoteModal'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -10,6 +12,8 @@ export default function FinalCTA() {
   const headlineRef = useRef<HTMLHeadingElement>(null)
   const subtextRef = useRef<HTMLParagraphElement>(null)
   const ctaRef = useRef<HTMLButtonElement>(null)
+  const { t, lang } = useLanguage()
+  const { openQuoteModal } = useQuoteModal()
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -79,14 +83,7 @@ export default function FinalCTA() {
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [])
-
-  const scrollToPricing = () => {
-    const el = document.getElementById('pricing')
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
-  }
-
-  const headlineWords = 'Stop hiring. Start building.'.split(' ')
+  }, [lang])
 
   return (
     <section
@@ -98,7 +95,7 @@ export default function FinalCTA() {
       {/* Decorative Circle */}
       <div
         ref={circleRef}
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[500px] md:h-[500px] rounded-full pointer-events-none animate-pulse-circle"
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] md:w-[500px] md:h-[500px] rounded-full pointer-events-none animate-pulse-circle"
         style={{ border: '1px solid rgba(223, 255, 0, 0.08)' }}
       />
 
@@ -107,8 +104,8 @@ export default function FinalCTA() {
           ref={headlineRef}
           className="text-[36px] md:text-[64px] font-bold text-off-white font-sans tracking-[-0.02em] leading-[1.0]"
         >
-          {headlineWords.map((word, i) => (
-            <span key={i} className="word inline-block mr-[0.3em]">
+          {t.finalCta.headlineWords.map((word, i) => (
+            <span key={`${lang}-${i}`} className="word inline-block mr-[0.3em]">
               {word}
             </span>
           ))}
@@ -116,17 +113,18 @@ export default function FinalCTA() {
 
         <p
           ref={subtextRef}
-          className="text-base font-mono text-secondary-text max-w-[520px] mt-6 leading-relaxed opacity-0"
+          className="text-sm sm:text-base font-mono text-secondary-text max-w-[540px] mt-6 leading-relaxed opacity-0"
         >
-          Join 50+ companies that replaced their dev overhead with OVERSKILLED. Your first week is on us — cancel anytime.
+          {t.finalCta.subtext}
         </p>
 
         <button
           ref={ctaRef}
-          onClick={scrollToPricing}
-          className="mt-10 bg-accent-lime text-dark font-semibold text-base px-12 py-4.5 rounded-[10px] hover:bg-accent-lime-hover hover:scale-[1.02] active:scale-[0.98] transition-all duration-150 font-sans animate-pulse-glow opacity-0"
+          type="button"
+          onClick={() => openQuoteModal()}
+          className="mt-10 w-full sm:w-auto bg-accent-lime text-dark font-semibold text-base px-12 py-4 rounded-[10px] hover:bg-accent-lime-hover hover:scale-[1.02] active:scale-[0.98] transition-all duration-150 font-sans animate-pulse-glow opacity-0"
         >
-          Start Your Subscription
+          {t.finalCta.cta}
         </button>
       </div>
     </section>

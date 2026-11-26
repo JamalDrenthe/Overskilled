@@ -19,29 +19,29 @@ interface MarqueeItem {
 }
 
 const row1Items: MarqueeItem[] = [
-  { text: 'React', highlight: 'blue' },
-  { text: 'Node.js', highlight: 'lime' },
-  { text: 'Python', highlight: 'blue' },
-  { text: 'AWS', highlight: 'lime' },
-  { text: 'Docker', highlight: 'blue' },
-  { text: 'Kubernetes', highlight: 'lime' },
-  { text: 'PostgreSQL', highlight: 'blue' },
-  { text: 'GraphQL', highlight: 'lime' },
-  { text: 'TypeScript', highlight: 'blue' },
-  { text: 'Machine Learning', highlight: 'lime' },
-  { text: 'CI/CD', highlight: 'blue' },
-  { text: 'Terraform', highlight: 'lime' },
+  { text: 'Cloud Security', highlight: 'lime' },
+  { text: 'AWS → GCP', highlight: 'blue' },
+  { text: 'AWS → Azure', highlight: 'lime' },
+  { text: 'Terraform', highlight: 'blue' },
+  { text: 'Zero-Trust', highlight: 'lime' },
+  { text: 'SOC 2 / ISO 27001', highlight: 'blue' },
+  { text: '24/7 CSPM', highlight: 'lime' },
+  { text: 'Kubernetes / GKE / AKS', highlight: 'blue' },
+  { text: 'FinOps', highlight: 'lime' },
+  { text: 'NIS2 & GDPR', highlight: 'blue' },
+  { text: 'OpenTofu', highlight: 'lime' },
+  { text: 'Zero-Downtime Cutover', highlight: 'blue' },
 ]
 
 const row2Items: MarqueeItem[] = [
-  { text: 'Next.js', highlight: 'purple' },
-  { text: 'Redis', highlight: 'green' },
-  { text: 'Stripe', highlight: 'purple' },
-  { text: 'Elasticsearch', highlight: 'green' },
-  { text: 'Prisma', highlight: 'purple' },
-  { text: 'WebSockets', highlight: 'green' },
-  { text: 'Tailwind', highlight: 'purple' },
-  { text: 'gRPC', highlight: 'green' },
+  { text: 'AlloyDB & Cloud SQL', highlight: 'purple' },
+  { text: 'Microsoft Entra ID', highlight: 'green' },
+  { text: 'IAM Least-Privilege', highlight: 'purple' },
+  { text: 'Landing Zones', highlight: 'green' },
+  { text: 'SIEM / SOAR', highlight: 'purple' },
+  { text: 'Policy-as-Code', highlight: 'green' },
+  { text: 'KMS Encryption', highlight: 'purple' },
+  { text: 'Post-Migration Audit', highlight: 'green' },
 ]
 
 function HighlightedText({ text, variant }: { text: string; variant: 'blue' | 'lime' | 'purple' | 'green' }) {
@@ -95,7 +95,7 @@ function MarqueeRow({
         {allItems.map((item, i) => (
           <span
             key={i}
-            className="text-[48px] md:text-[80px] font-bold font-sans tracking-[-0.02em] flex items-center shrink-0"
+            className="text-[36px] sm:text-[48px] md:text-[80px] font-bold font-sans tracking-[-0.02em] flex items-center shrink-0"
           >
             <HighlightedText text={item.text} variant={item.highlight} />
             <CheckIcon />
@@ -143,8 +143,8 @@ export default function MarqueeCapabilities() {
         items={row2Items}
         direction="right"
         speed="md:animate-marquee-right animate-marquee-right-fast"
-        opacity={0.7}
-        className="mt-4 hidden md:flex"
+        opacity={0.75}
+        className="mt-3 md:mt-4 flex"
       />
     </div>
   )

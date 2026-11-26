@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useLanguage } from '../lib/i18n'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -9,6 +10,7 @@ export default function SocialProof() {
   const stat1Ref = useRef<HTMLDivElement>(null)
   const stat2Ref = useRef<HTMLDivElement>(null)
   const testimonialRef = useRef<HTMLDivElement>(null)
+  const { t } = useLanguage()
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -101,21 +103,21 @@ export default function SocialProof() {
     >
       <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row gap-12 md:gap-12 items-start md:items-center justify-between">
         {/* Stats */}
-        <div className="flex gap-12 md:gap-12 shrink-0">
+        <div className="flex gap-10 sm:gap-12 md:gap-12 shrink-0">
           <div ref={stat1Ref} className="opacity-0">
-            <div className="stat-number text-[48px] font-bold text-accent-lime font-sans tracking-[-0.02em]">
-              0+
+            <div className="stat-number text-[44px] sm:text-[48px] font-bold text-accent-lime font-sans tracking-[-0.02em]">
+              50+
             </div>
             <div className="text-xs font-mono text-secondary-text tracking-[0.05em] mt-1">
-              Projects Delivered
+              {t.socialProof.stat1Label}
             </div>
           </div>
           <div ref={stat2Ref} className="opacity-0">
-            <div className="stat-number text-[48px] font-bold text-accent-lime font-sans tracking-[-0.02em]">
-              0%
+            <div className="stat-number text-[44px] sm:text-[48px] font-bold text-accent-lime font-sans tracking-[-0.02em]">
+              98%
             </div>
             <div className="text-xs font-mono text-secondary-text tracking-[0.05em] mt-1">
-              Client Satisfaction
+              {t.socialProof.stat2Label}
             </div>
           </div>
         </div>
@@ -123,12 +125,12 @@ export default function SocialProof() {
         {/* Testimonial */}
         <div ref={testimonialRef} className="max-w-[560px] opacity-0">
           <blockquote className="border-l-[3px] border-accent-lime pl-6">
-            <p className="text-base font-mono text-off-white italic leading-relaxed">
-              "OVERSKILLED replaced our entire dev team. We shipped 3x faster and cut costs by 40%. The best tech decision we've made."
+            <p className="text-sm sm:text-base font-mono text-off-white italic leading-relaxed">
+              {t.socialProof.quote}
             </p>
           </blockquote>
           <p className="text-sm font-mono text-secondary-text mt-4 pl-6">
-            — Sarah Chen, CTO at Nexus Labs
+            {t.socialProof.author}
           </p>
         </div>
       </div>
