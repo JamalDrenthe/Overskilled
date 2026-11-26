@@ -100,6 +100,10 @@ module.exports = {
           "0%": { transform: "rotate(0deg)" },
           "100%": { transform: "rotate(360deg)" },
         },
+        "spin-reverse-slow": {
+          "0%": { transform: "rotate(360deg)" },
+          "100%": { transform: "rotate(0deg)" },
+        },
         "pulse-glow": {
           "0%, 100%": { boxShadow: "0 0 20px rgba(223, 255, 0, 0.3)" },
           "50%": { boxShadow: "0 0 40px rgba(223, 255, 0, 0.5)" },
@@ -118,7 +122,8 @@ module.exports = {
         "marquee-right": "marquee-right 30s linear infinite",
         "marquee-right-fast": "marquee-right 20s linear infinite",
         "float": "float 4s ease-in-out infinite",
-        "spin-slow": "spin-slow 20s linear infinite",
+        "spin-slow": "spin-slow 24s linear infinite",
+        "spin-reverse-slow": "spin-reverse-slow 32s linear infinite",
         "pulse-glow": "pulse-glow 2s ease-in-out infinite",
         "pulse-circle": "pulse-circle 6s ease-in-out infinite",
       },

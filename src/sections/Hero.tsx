@@ -5,43 +5,175 @@ import gsap from 'gsap'
 import { useLanguage } from '../lib/i18n'
 
 function CircularBadge({ text }: { text: string }) {
-  const svgRef = useRef<SVGSVGElement>(null)
-  const textRef = useRef<SVGTextPathElement>(null)
-
-  const radius = 160
+  const outerRadius = 136
+  const innerRadius = 92
+  const ringText = `${text}${text}`
 
   return (
-    <div className="relative animate-spin-slow animate-float">
-      <svg
-        ref={svgRef}
-        width="360"
-        height="360"
-        viewBox="0 0 360 360"
-        className="w-[220px] h-[220px] md:w-[340px] md:h-[340px]"
-      >
-        <defs>
-          <path
-            id="circlePath"
-            d={`M 180, 180 m -${radius}, 0 a ${radius},${radius} 0 1,1 ${radius * 2},0 a ${radius},${radius} 0 1,1 -${radius * 2},0`}
-          />
-        </defs>
-        <circle cx="180" cy="180" r="170" fill="#DFFF00" />
-        <text
-          fill="#0A0A1A"
-          fontFamily="Inter, sans-serif"
-          fontWeight="800"
-          fontSize="28"
-          letterSpacing="8"
+    <div className="relative animate-float group select-none">
+      {/* Ambient lime aura behind the emblem */}
+      <div
+        className="absolute -inset-4 rounded-full blur-2xl opacity-35 group-hover:opacity-60 transition-opacity duration-500 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(circle, rgba(223,255,0,0.45) 0%, rgba(59,201,160,0.12) 55%, rgba(10,10,26,0) 75%)',
+        }}
+      />
+
+      <div className="relative w-[230px] h-[230px] md:w-[320px] md:h-[320px] flex items-center justify-center">
+        {/* Outer Rotating Lime Ring (separate wrapper so spin doesn't conflict with float) */}
+        <svg
+          width="360"
+          height="360"
+          viewBox="0 0 360 360"
+          className="w-full h-full animate-spin-slow drop-shadow-[0_0_28px_rgba(223,255,0,0.22)]"
         >
-          <textPath
-            ref={textRef}
-            href="#circlePath"
-            startOffset="0%"
+          <defs>
+            <path
+              id="outerCirclePath"
+              d={`M 180, 180 m -${outerRadius}, 0 a ${outerRadius},${outerRadius} 0 1,1 ${outerRadius * 2},0 a ${outerRadius},${outerRadius} 0 1,1 -${outerRadius * 2},0`}
+            />
+            <radialGradient id="limeDiscGrad" cx="50%" cy="35%" r="70%">
+              <stop offset="0%" stopColor="#ECFF5E" />
+              <stop offset="65%" stopColor="#DFFF00" />
+              <stop offset="100%" stopColor="#C4E600" />
+            </radialGradient>
+          </defs>
+
+          {/* Outer precision rim */}
+          <circle
+            cx="180"
+            cy="180"
+            r="174"
+            fill="none"
+            stroke="rgba(223, 255, 0, 0.28)"
+            strokeWidth="1.5"
+            strokeDasharray="6 6"
+          />
+
+          {/* Main high-contrast lime disc */}
+          <circle
+            cx="180"
+            cy="180"
+            r="166"
+            fill="url(#limeDiscGrad)"
+            stroke="#0A0A1A"
+            strokeWidth="3"
+          />
+
+          {/* Subtle dark track framing the rotating typography */}
+          <circle
+            cx="180"
+            cy="180"
+            r="158"
+            fill="none"
+            stroke="#0A0A1A"
+            strokeOpacity="0.18"
+            strokeWidth="1.5"
+          />
+          <circle
+            cx="180"
+            cy="180"
+            r="116"
+            fill="none"
+            stroke="#0A0A1A"
+            strokeOpacity="0.22"
+            strokeWidth="1.5"
+          />
+
+          {/* Perfectly distributed 360-degree typography along r=136 */}
+          <text
+            fill="#0A0A1A"
+            fontFamily="Inter, system-ui, sans-serif"
+            fontWeight="900"
+            fontSize="16.5"
+            letterSpacing="3.6"
           >
-            {text}
-          </textPath>
-        </text>
-      </svg>
+            <textPath
+              href="#outerCirclePath"
+              startOffset="0%"
+              textLength="854"
+              lengthAdjust="spacing"
+            >
+              {ringText}
+            </textPath>
+          </text>
+        </svg>
+
+        {/* Counter-Rotating Inner Technical Ring */}
+        <svg
+          width="360"
+          height="360"
+          viewBox="0 0 360 360"
+          className="absolute inset-0 w-full h-full animate-spin-reverse-slow pointer-events-none"
+        >
+          <defs>
+            <path
+              id="innerCirclePath"
+              d={`M 180, 180 m -${innerRadius}, 0 a ${innerRadius},${innerRadius} 0 1,1 ${innerRadius * 2},0 a ${innerRadius},${innerRadius} 0 1,1 -${innerRadius * 2},0`}
+            />
+          </defs>
+
+          {/* Dark inner core plate */}
+          <circle
+            cx="180"
+            cy="180"
+            r="112"
+            fill="#0A0A1A"
+            stroke="#141432"
+            strokeWidth="2"
+          />
+
+          {/* Dashed technical telemetry ring */}
+          <circle
+            cx="180"
+            cy="180"
+            r="104"
+            fill="none"
+            stroke="rgba(223, 255, 0, 0.35)"
+            strokeWidth="1.5"
+            strokeDasharray="3 8"
+          />
+
+          {/* Inner mono telemetry text */}
+          <text
+            fill="#8888AA"
+            fontFamily="Geist Mono, monospace"
+            fontWeight="600"
+            fontSize="9.5"
+            letterSpacing="3.2"
+          >
+            <textPath
+              href="#innerCirclePath"
+              startOffset="0%"
+              textLength="578"
+              lengthAdjust="spacing"
+            >
+              {'CLOUD SECURITY • ZERO DOWNTIME • AWS → GCP / AZURE • '}
+            </textPath>
+          </text>
+        </svg>
+
+        {/* Static Center Emblem Core */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div
+            className="w-[96px] h-[96px] md:w-[132px] md:h-[132px] rounded-full bg-surface/95 border border-border-os flex flex-col items-center justify-center shadow-[inset_0_0_24px_rgba(223,255,0,0.12)] group-hover:border-accent-lime/70 transition-colors duration-300"
+          >
+            {/* Glowing status dot */}
+            <span className="w-1.5 h-1.5 rounded-full bg-success-green mb-1 shadow-[0_0_8px_#3BC9A0]" />
+
+            {/* Geometric OS / Shield Monogram */}
+            <div className="flex items-center gap-0.5 text-off-white font-sans font-black text-xl md:text-3xl tracking-[-0.05em] leading-none">
+              <span>O</span>
+              <span className="text-accent-lime">S</span>
+            </div>
+
+            <span className="mt-1 text-[8px] md:text-[10px] font-mono uppercase tracking-[0.22em] text-accent-lime/90">
+              ELITE
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
