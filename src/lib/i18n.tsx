@@ -272,7 +272,7 @@ export const translations: Record<Language, Translations> = {
     hero: {
       newPillBadge: 'NEW',
       newPillText: 'Cloud Security & Migration Suite (AWS → GCP / Azure)',
-      circularText: 'OVERSKILLED • ELITE TECH • ON DEMAND • ',
+      circularText: 'OVERSKILLED • ON DEMAND • ',
       headlineWords: 'Tech expertise zonder de overhead. Betaal per maand, altijd opzegbaar.'.split(' '),
       highlightWords: ['zonder', 'de', 'overhead.'],
       subtitle:
@@ -922,7 +922,7 @@ export const translations: Record<Language, Translations> = {
     hero: {
       newPillBadge: 'NEW',
       newPillText: 'Cloud Security & Migration Suite (AWS → GCP / Azure)',
-      circularText: 'OVERSKILLED • ELITE TECH • ON DEMAND • ',
+      circularText: 'OVERSKILLED • ON DEMAND • ',
       headlineWords: 'Tech expertise without the overhead. Pay monthly, cancel anytime.'.split(' '),
       highlightWords: ['without', 'the', 'overhead.'],
       subtitle:

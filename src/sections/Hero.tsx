@@ -7,7 +7,7 @@ import { useLanguage } from '../lib/i18n'
 function CircularBadge({ text }: { text: string }) {
   const outerRadius = 136
   const innerRadius = 92
-  const ringText = `${text}${text}`
+  const ringText = `${text}${text}${text}`
 
   return (
     <div className="relative animate-float group select-none">
